@@ -1,0 +1,74 @@
+$ORACLE_HOME/rdbms/admin
+
+/u03/home/ORAHOME/product/10.2/db_1/rdbms/admin
+
+
+$cd $ORACLE_HOME/rdbms/admin
+
+
+sql>@?/rdbms/admin/utlu102i.sql
+
+
+
+Tablespaces: [make adjustments in the current environment]
+**********************************************************************
+--> SYSTEM tablespace is adequate for the upgrade.
+.... minimum required size: 488 MB
+.... AUTOEXTEND additional space required: 8 MB
+--> UNDOTBS1 tablespace is adequate for the upgrade.
+.... minimum required size: 400 MB
+.... AUTOEXTEND additional space required: 370 MB
+--> SYSAUX tablespace is adequate for the upgrade.
+.... minimum required size: 247 MB
+.... AUTOEXTEND additional space required: 7 MB
+--> TEMP tablespace is adequate for the upgrade.
+.... minimum required size: 58 MB
+.... AUTOEXTEND additional space required: 38 MB
+--> EXAMPLE tablespace is adequate for the upgrade.
+.... minimum required size: 69 MB
+.
+
+-- To check the tablespace sizes:
+
+
+SQL> select file_name, tablespace_name, bytes/1024/1024 from dba_data_files;
+
+
+
+
+
+SQL> alter database datafile
+  2  '/u03/home/ORAHOME/oradata/rabbi10/system01.dbf' resize 600m;
+
+Database altered.
+
+SQL> alter database datafile
+  2  '/u03/home/ORAHOME/oradata/rabbi10/undotbs01.dbf' resize 500m;
+
+Database altered.
+
+SQL> alter database datafile
+  2  '/u03/home/ORAHOME/oradata/rabbi10/sysaux01.dbf' resize 300m;
+
+Database altered.
+
+
+
+SQL> select file_name, tablespace_name, bytes/1024/1024 from dba_temp_files;
+
+
+
+
+SQL> alter database tempfile
+  2  '/u03/home/ORAHOME/oradata/rabbi10/temp01.dbf' resize 150m;
+
+Database altered.
+
+
+
+select comp_name, version, status from dba_registry;
+
+
+Check alert logs at
+
+/u01/home/ORAHOME/admin/rabbi10/bdump
